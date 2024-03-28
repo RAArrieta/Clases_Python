@@ -1,30 +1,34 @@
-# Crear una clase Articulo:
-#   - nombre: str
-#   - precio: float
-#   - __str__()
-# Crear clase Pedido:
-#   - variable de clase: lista_de_pedidos = []
-#   - variables de instancia:
-#       - usuario: Usuario
-#       - articulo: Articulo
-#   - __str__()
-from personas import Usuario
+# from typing import Self
+from .personas import Usuario  # las importaciones entre módulos de un paquete usan IMPORTACIONES RELATIVAS
+
+# es decir, se usa el punto
+
 
 class Articulo:
+    """Son productos con un nombre y un precio"""
+
     def __init__(self, nombre, precio) -> None:
         self.nombre = nombre
         self.precio = precio
 
     def __str__(self) -> str:
-        return f"{self.nombre} {self.precio}"
+        return f"{self.nombre}: ${self.precio:.2f}"
+
 
 class Pedido:
-    lista_de_pedidos = []
+    """Consiste en un usuario que compra un artículo
+    y se guarda en una lista de pedidos"""
 
-    def __init__(self, usuario= Usuario, articulo = Articulo) -> None:
+    lista_de_pedidos: list["Pedido"] = []
+    # lista_de_pedidos: list[Self] = []
+
+    def __init__(self, usuario: Usuario, articulo: Articulo) -> None:
         self.usuario = usuario
         self.articulo = articulo
+        Pedido.lista_de_pedidos.append(self)
 
-producto1 = Articulo("Muzzarella",3800)
+    def __str__(self) -> str:
+        return f"- - - {self.usuario} compró: {self.articulo}"
 
-print(producto1)
+    def __repr__(self) -> str:
+        return f"{self.usuario} compró: {self.articulo}"
